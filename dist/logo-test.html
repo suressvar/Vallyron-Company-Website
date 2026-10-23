@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+<style>
+  body { background: #fafaf8; font-family: sans-serif; padding: 40px; color: #111; }
+  .grid { display: flex; gap: 40px; align-items: flex-start; }
+  .box { background: #fff; padding: 20px; border: 1px solid #ddd; border-radius: 8px; }
+  .box h3 { margin-top: 0; font-size: 14px; }
+  .dark { background: #111; color: #fff; }
+  .dark h3 { color: #fff; }
+  .preview-large { width: 368px; height: 250px; }
+  .preview-nav { height: 34px; width: auto; }
+</style>
+</head>
+<body>
+  <h2>Logo Quality Comparison</h2>
+  <div class="grid">
+    <div class="box">
+      <h3>1. Original PNG Crop (Monogram)</h3>
+      <img src="/brand-assets/vallyron-mark-dark.png" class="preview-large">
+      <div>Navbar size (34px):</div>
+      <img src="/brand-assets/vallyron-mark-dark.png" class="preview-nav">
+    </div>
+    <div class="box">
+      <h3>2. Old Scanline SVG (Unclear / Broken)</h3>
+      <img src="/brand-assets/vallyron-mark.svg" class="preview-large">
+      <div>Navbar size (34px):</div>
+      <img src="/brand-assets/vallyron-mark.svg" class="preview-nav">
+    </div>
+    <div class="box">
+      <h3>3. New Clean Vector SVG</h3>
+      <img src="/brand-assets/test-vector.svg" class="preview-large">
+      <div>Navbar size (34px):</div>
+      <img src="/brand-assets/test-vector.svg" class="preview-nav">
+    </div>
+  </div>
+</body>
+</html>
