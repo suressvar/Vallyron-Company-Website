@@ -16,7 +16,7 @@ test('Every generated page has unique metadata, one H1, and working local links'
   const sitemap=await readFile('dist/sitemap.xml','utf8');
   const html=[...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map(([,url])=>path.join('dist',new URL(url).pathname,'index.html'));
   html.push(path.join('dist','404.html'));
-  assert.equal(html.length,25); // Published pages only; preserve standalone local design previews.
+  assert.equal(html.length,26); // Published pages only; preserve standalone local design previews.
   const titles=new Set();const descriptions=new Set();
   for(const file of html){const text=await readFile(file,'utf8');assert.equal((text.match(/<h1[ >]/g)||[]).length,1,file);const title=text.match(/<title>(.*?)<\/title>/)[1];assert.ok(!titles.has(title),title);titles.add(title);const desc=text.match(/name="description" content="([^"]*)"/)[1];assert.ok(!descriptions.has(desc)||file.includes('terms')||file.includes('privacy'),file);descriptions.add(desc);assert.match(text,/rel="canonical"/);assert.match(text,/application\/ld\+json/);for(const [,href]of text.matchAll(/(?:href|src)="(\/[^"?#]*)/g)){const target=path.join('dist',href.endsWith('/')?href+'index.html':href);assert.ok(all.includes(target),`${file}: missing ${href}`);}}
 });
@@ -24,6 +24,9 @@ test('HTTP routing, missing pages and non-POST contact requests are handled',asy
   await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));const base=`http://127.0.0.1:${server.address().port}`;
   try{
     const page=await fetch(base+'/services/');assert.equal(page.status,200);assert.match(page.headers.get('content-type'),/text\/html/);
+    const work=await fetch(base+'/work/');assert.equal(work.status,200);
+    const blog=await fetch(base+'/blog/');assert.equal(blog.status,200);
+    const redir=await fetch(base+'/insights/',{redirect:'manual'});assert.equal(redir.status,301);assert.equal(redir.headers.get('location'),'/blog/');
     assert.equal((await fetch(base+'/missing-page')).status,404);
     assert.equal((await fetch(base+'/.data/enquiries.jsonl')).status,404);
     assert.equal((await fetch(base+'/api/contact')).status,405);

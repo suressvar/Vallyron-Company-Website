@@ -50,6 +50,8 @@ export const server=http.createServer(async(req,res)=>{
     }
     if(!['GET','HEAD'].includes(req.method)){res.writeHead(405);res.end();return;}
     let decoded;try{decoded=decodeURIComponent(url.pathname);}catch{res.writeHead(400);res.end('Invalid URL');return;}
+    if(decoded==='/insights'||decoded==='/insights/'){res.writeHead(301,{Location:'/blog/'+url.search});res.end();return;}
+    if(decoded.startsWith('/insights/')){res.writeHead(301,{Location:decoded.replace(/^\/insights\//,'/blog/')+url.search});res.end();return;}
     const filePath=path.resolve(root,'.'+decoded.replaceAll('\\','/'));
     if(filePath!==root&&!filePath.startsWith(root+path.sep)){res.writeHead(403);res.end('Forbidden');return;}
     let target=filePath,statusCode=200;
